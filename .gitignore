@@ -1,2 +1,134 @@
-.idea
-venv
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyz
+*.pyw
+*.pyc
+
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+*.bak
+*.swp
+
+# Virtual Environment
+venv/
+env/
+bin/
+include/
+lib/
+libs/
+
+# Ignore local development settings
+settings/local.py
+
+# Ignore production settings
+settings/production.py
+
+# Ignore sensitive information
+*.env
+
+# Ignore database configuration
+*.sqlite3
+
+# Ignore IDE files
+.vscode/
+*.idea/
+
+# Ignore compiled files
+*.pyc
+
+# Ignore test database
+*.db
+*.db-journal
+
+# Ignore generated HTML files
+*.html
+
+# Ignore coverage reports
+htmlcov/
+
+# Ignore translations
+locale/
+
+# Ignore node modules
+node_modules/
+
+# Ignore static files
+staticfiles/
+
+# Ignore pipenv files
+Pipfile.lock
+
+# Ignore Docker files
+Dockerfile
+docker-compose.yml
+
+# Ignore cache and temporary files
+*.log*
+*.swp
+*.swo
+*.bak
+*.pyc
+*.cache/
+
+# Ignore mypy cache
+.mypy_cache/
+
+# Ignore pytest cache
+.pytest_cache/
+
+# Ignore coverage reports
+.coverage
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore local development files
+local_settings.py
+
+# Ignore any backup files
+*~
+
+# Ignore VS Code configuration
+.vscode/
+
+# Ignore macOS metadata
+.DS_Store
+
+# Ignore compiled Python files
+*.pyc
+*.pyo
+
+# Ignore pytest cache
+__pycache__/
+.cache/
+
+# Ignore environment file
+.env
+
+# Ignore compiled bytecode
+__pycache__/
+*.pyc
+
+# Ignore pipenv virtual environment
+Pipfile.lock
+
+# Ignore poetry virtual environment
+poetry.lock
+
+# Ignore pycache
+__pycache__/
+
+# Ignore PyInstaller files
+dist/
+build/
+*.spec
