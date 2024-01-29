@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
 from django.db import models
 
 from django.conf import settings
@@ -9,7 +10,11 @@ class Crew(models.Model):
     last_name = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.first_name + self.last_name
+        return f"{self.first_name} {self.last_name}"
+
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
 
 
 class Country(models.Model):
@@ -20,6 +25,9 @@ class Country(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = "countries"
+
 
 class Passenger(AbstractUser):
     class Meta:
@@ -28,7 +36,7 @@ class Passenger(AbstractUser):
 
 class Airport(models.Model):
     name = models.CharField(max_length=255)
-    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name="airports")
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name="airport_name")
     closest_big_city = models.CharField(max_length=255)
 
     def __str__(self):
@@ -49,7 +57,11 @@ class Airplane(models.Model):
     airplane_type = models.ForeignKey(AirplaneType, on_delete=models.CASCADE, related_name="airplanes")
 
     def __str__(self):
-        return self.name + str(self.airplane_type)
+        return f"{self.name} type({self.airplane_type})"
+
+    @property
+    def capacity(self):
+        return self.rows * self.seats_in_row
 
 
 class Route(models.Model):
@@ -58,7 +70,11 @@ class Route(models.Model):
     distance = models.IntegerField()
 
     def __str__(self):
-        return str(self.source) + str(self.destination)
+        return f"{self.source} - {self.destination}"
+
+    @property
+    def name(self):
+        return f"{self.source} - {self.destination}"
 
 
 class Order(models.Model):
@@ -86,6 +102,36 @@ class Ticket(models.Model):
     flight = models.ForeignKey(Flight, on_delete=models.CASCADE, related_name="tickets")
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="tickets")
 
+    class Meta:
+        unique_together = ("seat", "row", "flight")
+
     def __str__(self):
         return f"{self.flight} {self.seat} {self.row}"
 
+    @staticmethod
+    def validate_seat(seat, num_seats, row, num_rows, error_to_raise):
+        if not (1 <= seat <= num_seats):
+            raise error_to_raise({
+                "seat": f"seat must be in  range [1, {num_seats}], not {seat}"
+            })
+        if not (1 <= row <= num_rows):
+            raise error_to_raise({
+                "row": f"row must be in  range [1, {num_rows}], not {row}"
+            })
+
+    def save(
+            self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        self.full_clean()
+        return super(Ticket, self).save(
+            force_insert, force_update, using, update_fields
+        )
+
+    def clean(self):
+        Ticket.validate_seat(
+            self.seat,
+            self.flight.airplane.seats_in_row,
+            self.row,
+            self.flight.airplane.rows,
+            ValidationError
+        )

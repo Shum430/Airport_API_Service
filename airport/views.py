@@ -22,13 +22,24 @@ from airport.serializers import (
     OrderSerializer,
     FlightSerializer,
     TicketSerializer,
-    AirplaneTypeSerializer
+    AirplaneTypeSerializer,
+    CrewDetailSerializer,
+    CrewListSerializer,
+    FlightDetailSerializer,
+    FlightListSerializer,
 )
 
 
 class CrewViewSet(viewsets.ModelViewSet):
     queryset = Crew.objects.all()
     serializer_class = CrewSerializer
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return CrewListSerializer
+        if self.action == "retrieve":
+            return CrewDetailSerializer
+        return CrewSerializer
 
 
 class CountryViewSet(viewsets.ModelViewSet):
@@ -65,12 +76,20 @@ class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
+    def get_queryset(self):
+        return self.queryset.filter(passenger=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(passenger=self.request.user)
+
 
 class FlightViewSet(viewsets.ModelViewSet):
     queryset = Flight.objects.all()
     serializer_class = FlightSerializer
 
-
-class TicketViewSet(viewsets.ModelViewSet):
-    queryset = Ticket.objects.all()
-    serializer_class = TicketSerializer
+    def get_serializer_class(self):
+        if self.action == "list":
+            return FlightListSerializer
+        if self.action == "retrieve":
+            return FlightDetailSerializer
+        return FlightSerializer
