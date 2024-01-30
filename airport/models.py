@@ -56,12 +56,12 @@ class Airplane(models.Model):
     seats_in_row = models.IntegerField()
     airplane_type = models.ForeignKey(AirplaneType, on_delete=models.CASCADE, related_name="airplanes")
 
-    def __str__(self):
-        return f"{self.name} type({self.airplane_type})"
-
     @property
     def capacity(self):
         return self.rows * self.seats_in_row
+
+    def __str__(self):
+        return f"{self.name} type({self.airplane_type.name})"
 
 
 class Route(models.Model):
@@ -70,7 +70,7 @@ class Route(models.Model):
     distance = models.IntegerField()
 
     def __str__(self):
-        return f"{self.source} - {self.destination}"
+        return f"{self.source.name} - {self.destination.name}"
 
     @property
     def name(self):
