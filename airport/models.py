@@ -36,7 +36,7 @@ class Passenger(AbstractUser):
 
 class Airport(models.Model):
     name = models.CharField(max_length=255)
-    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name="airport_name")
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name="airports")
     closest_big_city = models.CharField(max_length=255)
 
     def __str__(self):

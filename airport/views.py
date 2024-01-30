@@ -44,7 +44,12 @@ class CrewViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = (
             Crew.objects
-            .prefetch_related("flights__route", "flights__airplane", "flights__airplane__airplane_type", "flights")
+            .prefetch_related(
+                "flights",
+                "flights__route",
+                "flights__airplane",
+                "flights__airplane__airplane_type",
+            )
         )
 
         return queryset
@@ -97,7 +102,15 @@ class RouteViewSet(viewsets.ModelViewSet):
         queryset = self.queryset
 
         if self.action == "list":
-            queryset.select_related("source", "destination")
+            (
+                queryset
+                .select_related("source", "destination")
+                .prefetch_related(
+                    "source__country",
+                    "source__destination_routes",
+                )
+            )
+
         return queryset
 
 
@@ -119,6 +132,14 @@ class OrderViewSet(viewsets.ModelViewSet):
             queryset = (
                 queryset
                 .select_related("passenger")
+                .prefetch_related(
+                    "tickets",
+                    "tickets__flight",
+                    "tickets__order",
+                    "tickets__flight__airplane",
+                    "tickets__flight__crew",
+                    "tickets__flight__route__source",
+                )
             )
         return queryset
 
