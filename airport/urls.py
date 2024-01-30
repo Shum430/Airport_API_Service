@@ -3,7 +3,7 @@ from rest_framework import routers
 from airport.views import (
     CrewViewSet,
     CountryViewSet,
-    PassengerViewSet,
+    UserViewSet,
     AirplaneViewSet,
     AirportViewSet,
     AirplaneTypeViewSet,
@@ -15,7 +15,7 @@ from airport.views import (
 router = routers.DefaultRouter()
 router.register("crews", CrewViewSet)
 router.register("countries", CountryViewSet)
-router.register("passengers", PassengerViewSet)
+router.register("users", UserViewSet)
 router.register("airports", AirportViewSet)
 router.register("airplanes", AirplaneViewSet)
 router.register("airplane_types", AirplaneTypeViewSet)

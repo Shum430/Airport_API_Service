@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
+from django.contrib.auth import get_user_model
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -38,8 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "airport",
-    "user",
     "debug_toolbar",
+    "user",
     "rest_framework",
     "rest_framework.authtoken"
 ]
@@ -129,7 +131,9 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = "airport.Passenger"
+# User = get_user_model()
+
+AUTH_USER_MODEL = "user.User"
 
 INTERNAL_IPS = [
     "127.0.0.1",
@@ -138,3 +142,5 @@ INTERNAL_IPS = [
 MEDIA_ROOT = BASE_DIR / "media"
 
 MEDIA_URL = "/media/"
+
+

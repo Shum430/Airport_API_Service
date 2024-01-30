@@ -1,7 +1,7 @@
 from django.db import transaction
 from rest_framework import serializers
 
-from airport.models import Crew, Country, Passenger, Airport, AirplaneType, Airplane, Route, Order, Flight, Ticket
+from airport.models import Crew, Country, User, Airport, AirplaneType, Airplane, Route, Order, Flight, Ticket
 
 
 class CountrySerializer(serializers.ModelSerializer):
@@ -159,9 +159,9 @@ class CrewListSerializer(serializers.ModelSerializer):
         fields = ("first_name", "last_name", "flights")
 
 
-class PassengerSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Passenger
+        model = User
         fields = ("first_name", "last_name", "username")
 
 

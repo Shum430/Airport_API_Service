@@ -1,7 +1,7 @@
 import os.path
 import uuid
 
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -33,7 +33,10 @@ class Country(models.Model):
         verbose_name_plural = "countries"
 
 
-class Passenger(AbstractUser):
+class User(AbstractUser):
+    groups = models.ManyToManyField(Group, related_name="users")
+    user_permissions = models.ManyToManyField(Permission, related_name="users")
+
     class Meta:
         ordering = ("username",)
 
@@ -90,10 +93,10 @@ class Route(models.Model):
 
 class Order(models.Model):
     create_at = models.DateTimeField()
-    passenger = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders")
 
     def __str__(self):
-        return str(self.passenger) + str(self.create_at)
+        return str(self.user) + str(self.create_at)
 
 
 class Flight(models.Model):

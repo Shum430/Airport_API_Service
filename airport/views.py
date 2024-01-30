@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from airport.models import (
     Crew,
     Country,
-    Passenger,
+    User,
     Airport,
     Airplane,
     Route,
@@ -20,7 +20,7 @@ from airport.permissions import IsAdminOrIfAuthenticatedReadOnly
 from airport.serializers import (
     CrewSerializer,
     CountrySerializer,
-    PassengerSerializer,
+    UserSerializer,
     AirportSerializer,
     AirplaneSerializer,
     RouteSerializer,
@@ -66,9 +66,9 @@ class CountryViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly, )
 
 
-class PassengerViewSet(viewsets.ModelViewSet):
-    queryset = Passenger.objects.all()
-    serializer_class = PassengerSerializer
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly, )
 
 
@@ -153,12 +153,12 @@ class OrderViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly, )
 
     def get_queryset(self):
-        queryset = self.queryset.filter(passenger=self.request.user)
+        queryset = self.queryset.filter(user=self.request.user)
 
         if self.action == "list":
             queryset = (
                 queryset
-                .select_related("passenger")
+                .select_related("user")
                 .prefetch_related(
                     "tickets",
                     "tickets__flight",
@@ -171,7 +171,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         return queryset
 
     def perform_create(self, serializer):
-        serializer.save(passenger=self.request.user)
+        serializer.save(user=self.request.user)
 
     def get_serializer_class(self):
         if self.action == "list":
