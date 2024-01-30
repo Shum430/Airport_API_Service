@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "airport",
+    "user",
     "debug_toolbar",
     "rest_framework",
     "rest_framework.authtoken"

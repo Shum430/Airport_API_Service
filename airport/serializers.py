@@ -134,6 +134,14 @@ class AirplaneSerializer(serializers.ModelSerializer):
         fields = ("name", "rows", "seats_in_row", "airplane_type", "capacity")
 
 
+class AirplaneImageSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField()
+
+    class Meta:
+        model = Airplane
+        fields = ("image",)
+
+
 class FlightCrewSerializer(FlightSerializer):
     route = serializers.ReadOnlyField(source="route.__str__")
     airplane = serializers.ReadOnlyField(source="airplane.__str__")
