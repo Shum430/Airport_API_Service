@@ -89,13 +89,12 @@ class AirportViewSet(viewsets.ModelViewSet):
 class AirplaneTypeViewSet(viewsets.ModelViewSet):
     queryset = AirplaneType.objects.all()
     serializer_class = AirplaneTypeSerializer
-    permission_classes = (IsAdminOrIfAuthenticatedReadOnly, )
 
 
 class AirplaneViewSet(viewsets.ModelViewSet):
     queryset = Airplane.objects.all()
     serializer_class = AirplaneSerializer
-    permission_classes = (IsAdminOrIfAuthenticatedReadOnly, )
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         queryset = self.queryset
