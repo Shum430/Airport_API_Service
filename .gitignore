@@ -68,9 +68,6 @@ staticfiles/
 # Ignore pipenv files
 Pipfile.lock
 
-# Ignore Docker files
-Dockerfile
-docker-compose.yml
 
 # Ignore cache and temporary files
 *.log*
