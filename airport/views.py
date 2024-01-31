@@ -1,8 +1,9 @@
 from django.db.models import Count, F
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
 from airport.models import (
@@ -124,8 +125,18 @@ class RouteViewSet(viewsets.ModelViewSet):
     serializer_class = RouteSerializer
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly, )
 
+
     def get_queryset(self):
         queryset = self.queryset
+
+        source = self.request.query_params.get("source")
+        destination = self.request.query_params.get("destination")
+
+        if source and destination:
+            queryset = queryset.filter(
+                source__name__icontains=source,
+                destination__name__icontains=destination
+            )
 
         if self.action == "list":
             (
@@ -137,7 +148,16 @@ class RouteViewSet(viewsets.ModelViewSet):
                 )
             )
 
-        return queryset
+        return queryset.distinct()
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(name='source', description='Filter by source city', required=False, type=str),
+            OpenApiParameter(name='destination', description='Filter by destination city', required=False, type=str),
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 
 class OrderPagination(PageNumberPagination):
@@ -150,7 +170,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     pagination_class = OrderPagination
-    permission_classes = (IsAdminOrIfAuthenticatedReadOnly, )
+    permission_classes = (IsAdminOrIfAuthenticatedReadOnly, IsAuthenticated)
 
     def get_queryset(self):
         queryset = self.queryset.filter(user=self.request.user)
