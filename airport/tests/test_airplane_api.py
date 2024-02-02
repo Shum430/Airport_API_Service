@@ -22,7 +22,7 @@ def sample_airplane(**params):
     return Airplane.objects.create(**defaults)
 
 
-class UnauthenticatedAirplaneApiTests(TestCase):
+class AirplaneApiTests(TestCase):
     def setUp(self):
         self.client = APIClient()
 

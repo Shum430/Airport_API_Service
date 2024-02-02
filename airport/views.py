@@ -201,6 +201,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 class FlightViewSet(viewsets.ModelViewSet):
     queryset = Flight.objects.all()
     serializer_class = FlightSerializer
+    permission_classes = (IsAdminOrIfAuthenticatedReadOnly, IsAuthenticated)
 
     def get_queryset(self):
         queryset = self.queryset
