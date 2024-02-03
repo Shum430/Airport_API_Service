@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from airport.models import (
     Crew,
     Country,
@@ -42,4 +43,3 @@ admin.site.register(Route)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Flight)
 admin.site.register(Ticket)
-

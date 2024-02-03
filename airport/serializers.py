@@ -103,7 +103,6 @@ class RouteFlightSerializer(RouteSerializer):
 class FlightListSerializer(FlightSerializer):
     crew = CrewFlightSerializer(many=True)
     route = RouteFlightSerializer(many=False)
-    # route = serializers.ReadOnlyField(source="route.__str__")
     airplane = serializers.ReadOnlyField(source="airplane.__str__")
     seats_available = serializers.IntegerField(read_only=True)
 
@@ -202,6 +201,7 @@ class TicketListSerializer(TicketSerializer):
 
 class OrderListSerializer(OrderSerializer):
     tickets = TicketListSerializer(many=True, read_only=True)
+
     class Meta:
         model = Order
         fields = ("tickets", "create_at",)

@@ -7,6 +7,7 @@ from rest_framework.test import APIClient
 from airport.models import Airplane, AirplaneType
 from airport.serializers import AirplaneSerializer
 
+
 AIRPLANE_URL = reverse("airport:airplane-list")
 
 
@@ -49,5 +50,3 @@ class AuthenticatedAirplaneApiTests(TestCase):
         serializer = AirplaneSerializer(airplanes, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
-
-

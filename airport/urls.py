@@ -5,7 +5,6 @@ from rest_framework import routers
 from airport.views import (
     CrewViewSet,
     CountryViewSet,
-    UserViewSet,
     AirplaneViewSet,
     AirportViewSet,
     AirplaneTypeViewSet,
@@ -25,6 +24,5 @@ router.register("orders", OrderViewSet)
 router.register("flights", FlightViewSet)
 
 urlpatterns = router.urls + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
 
 app_name = "airport"

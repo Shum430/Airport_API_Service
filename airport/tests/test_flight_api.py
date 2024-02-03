@@ -4,8 +4,8 @@ from rest_framework import status
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
-from airport.models import Flight, Crew, Route, Airplane, Airport, AirplaneType, Country
-from airport.serializers import FlightSerializer
+from airport.models import Crew, Route, Airplane, Airport, AirplaneType, Country
+
 
 class FlightTestCase(TestCase):
     def setUp(self):
@@ -17,11 +17,9 @@ class FlightTestCase(TestCase):
         self.client.force_authenticate(self.user)
         self.crew = Crew.objects.create(first_name='John', last_name='Doe')
 
-        # Create countries
         self.source_country = Country.objects.create(name='Source Country', population=1000000, net_worth=100000000)
         self.destination_country = Country.objects.create(name='Destination Country', population=1000000, net_worth=100000000)
 
-        # Create airports with associated countries
         self.source_airport = Airport.objects.create(name='Source', country=self.source_country, closest_big_city='Source City')
         self.destination_airport = Airport.objects.create(name='Destination', country=self.destination_country, closest_big_city='Destination City')
 
@@ -29,7 +27,6 @@ class FlightTestCase(TestCase):
         self.airplane = Airplane.objects.create(name='Test Airplane', rows=10, seats_in_row=6, airplane_type=AirplaneType.objects.create(name='Test Type'))
 
     def tearDown(self):
-        # Optionally reset any changes made during the test
         pass
 
     def test_flight_creation(self):

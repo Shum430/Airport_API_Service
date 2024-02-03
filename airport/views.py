@@ -17,7 +17,6 @@ from airport.models import (
     Flight,
     AirplaneType
 )
-from airport.permissions import IsAdminOrIfAuthenticatedReadOnly
 from airport.serializers import (
     CrewSerializer,
     CountrySerializer,
@@ -31,8 +30,11 @@ from airport.serializers import (
     CrewDetailSerializer,
     CrewListSerializer,
     FlightDetailSerializer,
-    FlightListSerializer, OrderListSerializer, AirplaneImageSerializer,
+    FlightListSerializer,
+    OrderListSerializer,
+    AirplaneImageSerializer,
 )
+from airport.permissions import IsAdminOrIfAuthenticatedReadOnly
 
 
 class CrewViewSet(viewsets.ModelViewSet):
@@ -124,10 +126,8 @@ class RouteViewSet(viewsets.ModelViewSet):
     serializer_class = RouteSerializer
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly, )
 
-
     def get_queryset(self):
         queryset = self.queryset
-
         source = self.request.query_params.get("source")
         destination = self.request.query_params.get("destination")
 
